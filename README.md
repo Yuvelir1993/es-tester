@@ -1,2 +1,2 @@
-# es-tester
-Data testing framework of your Elasticsearch instance.
+# General
+Contains basic ELK stack and 'es-tester' framework.
