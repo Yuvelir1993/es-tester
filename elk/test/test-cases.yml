@@ -1,24 +1,22 @@
 version: 1.0
 tests:
   # value of such test: it always can be that in the pipeline some data can be simply erased.
-  - description: "Ensure that document with the given 'message' exists in 'takeAllIndex' but never in the 'logs-jenkins-jobs' data stream."
-    given: "Expect me in the 'takeAllIndex' but not in the 'logs-jenkins-jobs'."
-    expected:
-      exists-in:
-        indices: ['takeAllIndex']
-      missed-in:
-        data-streams: ['logs-jenkins-jobs']
+  - description: "Ensure that document with the given 'message' exists in 'storeAllIndex' but never in the 'logs-jenkins-jobs' data stream."
+    given: "Expect me in the 'storeAllIndex' but not in the 'logs-jenkins-jobs'."
+    where:
+      indices: ['storeAllIndex']
+    missed-in:
+      data-streams: ['logs-jenkins-jobs']
 
   # value of such test: be sure that document with such 'message' field exists and fields has been extracted correctly
   - description: "Check if data ingested everywhere and 'error.id' and 'tool.name' extracted correctly from the message."
-    given: "Exception 'MyUnexpectedException' occured in the tool 'MyRobustTool'"
-    expected:
-      exists-in:
-        indices: ['takeAllIndex']
-        data-streams: ['logs-jenkins-jobs']
-      # fields can be different in this index and data stream but do not want to overcomplicate for now :D
-      fields-created:
-        - field: "error.id"
-          value: "MyUnexpectedException"
-        - field: "tool.name"
-          value: "MyRobustTool"
+    given: "Exception 'UnexpectedException' occured in the tool 'MyMicroservice'"
+    where:
+      indices: ['storeAllIndex']
+      data-streams: ['logs-jenkins-jobs']
+      expected:
+        fields:
+          - field: "error.id"
+            value: "UnexpectedException"
+          - field: "tool.name"
+            value: "MyMicroservice"
