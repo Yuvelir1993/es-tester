@@ -1,6 +1,6 @@
 version: 1.0
 tests:
-  # value of such test: it always can be that in the pipeline some data can be simply erased.
+  # value of such test: under some conditions data should ALWAYS be in 1 index but also should NEVER be in other ones
   - description: "Ensure that document with the given 'message' exists in 'storeAllIndex' but never in the 'logs-jenkins-jobs' data stream."
     given: "Expect me in the 'storeAllIndex' but not in the 'logs-jenkins-jobs'."
     where:
@@ -8,7 +8,7 @@ tests:
     missed-in:
       data-streams: ['logs-jenkins-jobs']
 
-  # value of such test: be sure that document with such 'message' field exists and fields has been extracted correctly
+  # value of such test: be sure that document with such 'message' field exists in desired indices/data streams and fields has been extracted correctly
   - description: "Check if data ingested everywhere and 'error.id' and 'tool.name' extracted correctly from the message."
     given: "Exception 'UnexpectedException' occured in the tool 'MyMicroservice'"
     where:
